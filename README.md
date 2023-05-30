@@ -1,0 +1,2 @@
+# BveZuikiDenshadeGoControllerInterface
+BVEで瑞起製電車でGO!!コントローラーを使えるようにするためのプラグイン
