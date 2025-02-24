@@ -28,7 +28,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Plugin DLL
-        path: ./source/Ricald.ZuikiMasconInterface/bin/Release/Ricald.ZuikiMasconInterface.dll
+        path: ./source/Ricald.ZuikiMasconInterface/bin/Release/x64/Ricald.ZuikiMasconInterface.dll
 
   release:
     needs: build
