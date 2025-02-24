@@ -1,0 +1,71 @@
+name: Create Release Note
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild for .NET Framework 3.5
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        vs-version: '15.0'
+
+    - name: Build plugin
+      run: msbuild ./source/Ricald.ZuikiMasconInterface/Ricald.ZuikiMasconInterface.csproj /p:Configuration=Release /p:Platform=AnyCPU
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Plugin DLL
+        path: ./source/Ricald.ZuikiMasconInterface/bin/Release/Ricald.ZuikiMasconInterface.dll
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release')
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Plugin DLL
+          path: ./release
+
+      - name: Create Release Tag And Note
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.pull_request.title }}
+        uses: release-drafter/release-drafter@v5
+        with:
+          tag: ${{ env.RELEASE_TAG }}
+          name: Release ${{ env.RELEASE_TAG }}
+          version: ${{ env.RELEASE_TAG }}
+          publish: true
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/Ricald.ZuikiMasconInterface.dll
+          asset_name: Ricald.ZuikiMasconInterface.dll
+          asset_content_type: application/octet-stream
