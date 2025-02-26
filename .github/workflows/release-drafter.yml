@@ -33,14 +33,14 @@ jobs:
     - name: Upload artifact (.NET Framework 3.5)
       uses: actions/upload-artifact@v4
       with:
-        name: Plugin DLL net35
-        path: ./source/Ricald.ZuikiMasconInterface/bin/Release/net35/Ricald.ZuikiMasconInterface.dll
+        name: Plugin DLL (.NET Framework 3.5)
+        path: ./source/Ricald.ZuikiMasconInterface/bin/Release/net35/Ricald.ZuikiMasconInterface.Net35.dll
 
     - name: Upload artifact (.NET Framework 4.8)
       uses: actions/upload-artifact@v4
       with:
-        name: Plugin DLL net48
-        path: ./source/Ricald.ZuikiMasconInterface/bin/Release/net48/Ricald.ZuikiMasconInterface.dll
+        name: Plugin DLL (.NET Framework 4.8)
+        path: ./source/Ricald.ZuikiMasconInterface/bin/Release/net48/Ricald.ZuikiMasconInterface.Net48.dll
 
   release:
     needs: build
@@ -53,13 +53,13 @@ jobs:
       - name: Download artifact (.NET Framework 3.5)
         uses: actions/download-artifact@v4
         with:
-          name: Plugin DLL net35
+          name: Plugin DLL (.NET Framework 3.5)
           path: ./release/net35
 
       - name: Download artifact (.NET Framework 4.8)
         uses: actions/download-artifact@v4
         with:
-          name: Plugin DLL net48
+          name: Plugin DLL (.NET Framework 4.8)
           path: ./release/net48
 
       - name: Create Release Tag And Note
@@ -81,8 +81,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/net35/Ricald.ZuikiMasconInterface.dll
-          asset_name: net35/Ricald.ZuikiMasconInterface.dll
+          asset_path: ./release/net35/Ricald.ZuikiMasconInterface.Net35.dll
+          asset_name: Ricald.ZuikiMasconInterface.Net35.dll
           asset_content_type: application/octet-stream
 
       - name: Upload Release Asset (.NET Framework 4.8)
@@ -92,6 +92,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/net48/Ricald.ZuikiMasconInterface.dll
-          asset_name: net48/Ricald.ZuikiMasconInterface.dll
+          asset_path: ./release/net48/Ricald.ZuikiMasconInterface.Net48.dll
+          asset_name: Ricald.ZuikiMasconInterface.Net48.dll
           asset_content_type: application/octet-stream
