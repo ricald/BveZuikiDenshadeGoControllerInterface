@@ -24,23 +24,14 @@ jobs:
       with:
         vs-version: '15.0'
 
-    - name: Build plugin (.NET Framework 3.5)
-      run: msbuild ./source/Ricald.ZuikiMasconInterface/Ricald.ZuikiMasconInterface.csproj /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v3.5
+    - name: Build plugin
+      run: msbuild ./source/Ricald.ZuikiMasconInterface/Ricald.ZuikiMasconInterface.csproj /p:Configuration=Release /p:Platform=AnyCPU
 
-    - name: Build plugin (.NET Framework 4.8)
-      run: msbuild ./source/Ricald.ZuikiMasconInterface/Ricald.ZuikiMasconInterface.csproj /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v4.8
-
-    - name: Upload artifact (.NET Framework 3.5)
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: Plugin DLL (.NET Framework 3.5)
-        path: ./source/Ricald.ZuikiMasconInterface/bin/Release/net35/Ricald.ZuikiMasconInterface.Net35.dll
-
-    - name: Upload artifact (.NET Framework 4.8)
-      uses: actions/upload-artifact@v4
-      with:
-        name: Plugin DLL (.NET Framework 4.8)
-        path: ./source/Ricald.ZuikiMasconInterface/bin/Release/net48/Ricald.ZuikiMasconInterface.Net48.dll
+        name: Plugin DLL
+        path: ./source/Ricald.ZuikiMasconInterface/bin/Release/Ricald.ZuikiMasconInterface.dll
 
   release:
     needs: build
@@ -50,17 +41,11 @@ jobs:
       pull-requests: write
     if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release')
     steps:
-      - name: Download artifact (.NET Framework 3.5)
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: Plugin DLL (.NET Framework 3.5)
-          path: ./release/net35
-
-      - name: Download artifact (.NET Framework 4.8)
-        uses: actions/download-artifact@v4
-        with:
-          name: Plugin DLL (.NET Framework 4.8)
-          path: ./release/net48
+          name: Plugin DLL
+          path: ./release
 
       - name: Create Release Tag And Note
         id: create_release
@@ -74,24 +59,13 @@ jobs:
           version: ${{ env.RELEASE_TAG }}
           publish: true
 
-      - name: Upload Release Asset (.NET Framework 3.5)
-        id: upload-release-asset-net35
+      - name: Upload Release Asset
+        id: upload-release-asset
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/net35/Ricald.ZuikiMasconInterface.Net35.dll
-          asset_name: Ricald.ZuikiMasconInterface.Net35.dll
-          asset_content_type: application/octet-stream
-
-      - name: Upload Release Asset (.NET Framework 4.8)
-        id: upload-release-asset-net48
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/net48/Ricald.ZuikiMasconInterface.Net48.dll
-          asset_name: Ricald.ZuikiMasconInterface.Net48.dll
+          asset_path: ./release/Ricald.ZuikiMasconInterface.dll
+          asset_name: Ricald.ZuikiMasconInterface.dll
           asset_content_type: application/octet-stream
