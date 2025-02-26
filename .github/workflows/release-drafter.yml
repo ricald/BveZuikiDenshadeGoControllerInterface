@@ -8,7 +8,8 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
   build:
@@ -29,18 +30,18 @@ jobs:
     - name: Build plugin (.NET Framework 4.8)
       run: msbuild ./source/Ricald.ZuikiMasconInterface/Ricald.ZuikiMasconInterface.csproj /p:Configuration=Release /p:Platform=AnyCPU /p:TargetFrameworkVersion=v4.8
 
-    - name: Upload artifact
+    - name: Upload artifact (.NET Framework 3.5)
       uses: actions/upload-artifact@v4
       with:
-        name: Plugin DLL (.NET Framework 3.5)
+        name: Plugin DLL net35
         path: ./source/Ricald.ZuikiMasconInterface/bin/Release/net35/Ricald.ZuikiMasconInterface.dll
 
-    - name: Upload artifact
+    - name: Upload artifact (.NET Framework 4.8)
       uses: actions/upload-artifact@v4
       with:
-        name: Plugin DLL (.NET Framework 4.8)
+        name: Plugin DLL net48
         path: ./source/Ricald.ZuikiMasconInterface/bin/Release/net48/Ricald.ZuikiMasconInterface.dll
-  
+
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -52,15 +53,15 @@ jobs:
       - name: Download artifact (.NET Framework 3.5)
         uses: actions/download-artifact@v4
         with:
-          name: Plugin DLL (.NET Framework 3.5)
+          name: Plugin DLL net35
           path: ./release/net35
 
       - name: Download artifact (.NET Framework 4.8)
         uses: actions/download-artifact@v4
         with:
-          name: Plugin DLL (.NET Framework 4.8)
+          name: Plugin DLL net48
           path: ./release/net48
-  
+
       - name: Create Release Tag And Note
         id: create_release
         env:
@@ -79,9 +80,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./release/net35/Ricald.ZuikiMasconInterface.dll
-          asset_name: Ricald.ZuikiMasconInterface.dll (.NET Framework 3.5)
+          asset_name: net35/Ricald.ZuikiMasconInterface.dll
           asset_content_type: application/octet-stream
 
       - name: Upload Release Asset (.NET Framework 4.8)
@@ -90,8 +91,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./release/net48/Ricald.ZuikiMasconInterface.dll
-          asset_name: Ricald.ZuikiMasconInterface.dll (.NET Framework 4.8)
+          asset_name: net48/Ricald.ZuikiMasconInterface.dll
           asset_content_type: application/octet-stream
-  
