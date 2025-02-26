@@ -10,14 +10,17 @@ BVE Trainsimで瑞起製「電車でGO!!」コントローラーを使用する�
 
 * BVE Trainsim [BVE5.8 及び BVE6以降]
 * 瑞起製「電車でGO!!」コントローラー
-* .NET Framework 3.5
+* .NET Framework 3.5 (BVE5.8)
+* .NET Framework 4.8 (BVE6以降)
 
 ## インストール手順
 
 1.  [リリースページ](https://github.com/ricald/BveZuikiDenshadeGoControllerInterface/releases)から最新の`Ricald.ZuikiMasconInterface.dll`をダウンロードします。
 2.  ダウンロードしたDLLファイルをBVE Trainsimのバージョンに合わせて、以下のフォルダにコピーします。
-    * BVE5.8の場合: `C:\Program Files (x86)\mackoy\BveTs5\Input Devices`
-    * BVE6の場合: `C:\Program Files\mackoy\BveTs6\Input Devices`
+    * BVE5.8の場合:
+        * `Ricald.ZuikiMasconInterface.dll (.NET Framework 3.5)` を `C:\Program Files (x86)\mackoy\BveTs5\Input Devices` にコピーします。
+    * BVE6の場合:
+        * `Ricald.ZuikiMasconInterface.dll (.NET Framework 4.8)` を `C:\Program Files\mackoy\BveTs6\Input Devices` にコピーします。
 
 ## 使用方法
 
@@ -45,7 +48,8 @@ BVE Trainsimで瑞起製「電車でGO!!」コントローラーを使用する�
 
 ## 開発環境
 
-* .NET Framework 3.5
+* .NET Framework 3.5 (BVE5.8)
+* .NET Framework 4.8 (BVE6以降)
 
 ## ライセンス
 
