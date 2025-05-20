@@ -19,6 +19,7 @@ BVE Trainsimで瑞起製「電車でGO!!」コントローラーを使用する�
     * BVE5.8の場合: `Ricald.ZuikiMasconInterface.dll`を `C:\Program Files (x86)\mackoy\BveTs5\Input Devices` にコピーします。
     * BVE6の場合: `Ricald.ZuikiMasconInterface.dll`を `C:\Program Files\mackoy\BveTs6\Input Devices` にコピーします。
 3.  DLLファイルのプロパティを開き、「セキュリティ」タブの「許可する」チェックボックスにチェックを入れます。
+    ![](./documents/property.drawio.png)
 
 ## 使用方法
 
